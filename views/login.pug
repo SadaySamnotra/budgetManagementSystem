@@ -1,0 +1,36 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Login
+    link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css")
+    link(rel="stylesheet", href="/css/styles.css")
+    script(src="https://code.jquery.com/jquery-3.5.1.slim.min.js")
+    script(src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js")
+    script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js")
+  body
+    nav.navbar.navbar-expand-lg.navbar-light.bg-light
+      a.navbar-brand(href="/") Budget Management
+      button.navbar-toggler(type="button", data-toggle="collapse", data-target="#navbarNav", aria-controls="navbarNav", aria-expanded="false", aria-label="Toggle navigation")
+        span.navbar-toggler-icon
+      div#navbarNav.collapse.navbar-collapse
+        ul.navbar-nav
+          li.nav-item
+            a.nav-link(href="/login") Login
+          li.nav-item
+            a.nav-link(href="/register") Register
+    .container
+      .main-content
+        h1 Login to Your Account
+        form(action="/auth/login", method="POST")
+          .form-group
+            label(for="email") Email
+            input#email(type="email", name="email", required)
+          .form-group
+            label(for="password") Password
+            input#password(type="password", name="password", required)
+          button(type="submit", class="btn btn-primary") Submit
+        p Don't have an account? 
+          a(href="/register") Register here
+    script(src="/js/script.js")

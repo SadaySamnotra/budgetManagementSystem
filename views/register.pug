@@ -1,0 +1,42 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title Register
+    link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css")
+    link(rel="stylesheet", href="/css/styles.css")
+    script(src="https://code.jquery.com/jquery-3.5.1.slim.min.js")
+    script(src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js")
+    script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js")
+  body
+    nav.navbar.navbar-expand-lg.navbar-light.bg-light
+      a.navbar-brand(href="/") Budget Management
+      button.navbar-toggler(type="button", data-toggle="collapse", data-target="#navbarNav", aria-controls="navbarNav", aria-expanded="false", aria-label="Toggle navigation")
+        span.navbar-toggler-icon
+      div#navbarNav.collapse.navbar-collapse
+        ul.navbar-nav
+          li.nav-item
+            a.nav-link(href="/login") Login
+          li.nav-item
+            a.nav-link(href="/register") Register
+    .container
+      .main-content
+        h1 Create Your Account
+        form(action="/auth/register", method="POST")
+          .form-group
+            label(for="firstName") First Name
+            input#firstName.form-control(type="text", name="firstName", required)
+          .form-group
+            label(for="lastName") Last Name
+            input#lastName.form-control(type="text", name="lastName", required)
+          .form-group
+            label(for="email") Email
+            input#email.form-control(type="email", name="email", required)
+          .form-group
+            label(for="password") Password
+            input#password.form-control(type="password", name="password", required)
+          button.btn.btn-primary(type="submit") Register
+        p Already have an account? 
+          a(href="/login") Login here
+    script(src="/js/script.js")

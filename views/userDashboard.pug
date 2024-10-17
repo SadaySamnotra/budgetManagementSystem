@@ -1,0 +1,62 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title User Dashboard
+    link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css")
+    link(rel="stylesheet", href="/css/styles.css")
+    
+  body
+    nav.navbar.navbar-expand-lg.navbar-light.bg-light
+      a.navbar-brand(href="/") Budget Management
+      button.navbar-toggler(type="button", data-toggle="collapse", data-target="#navbarNav", aria-controls="navbarNav", aria-expanded="false", aria-label="Toggle navigation")
+        span.navbar-toggler-icon
+      div#navbarNav.collapse.navbar-collapse
+        ul.navbar-nav
+          li.nav-item
+            span.nav-link Welcome, #{user.firstName} #{user.lastName}
+          li.nav-item
+            a.nav-link(href="/monthly-expenses") Monthly Expenses
+          li.nav-item
+            a.nav-link(href="/add-expense") Add Expense
+          li.nav-item
+            form(action="/auth/logout", method="GET")
+              button.btn.btn-outline-danger(type="submit") Logout
+
+.container.mt-5
+  .card
+    .card-body
+      h4.card-title Add Expense
+      form#add-expense-form(method="POST") 
+        .form-group
+          label(for="expenseType") Type of Expense:
+          select#expenseType(class="form-control", name="category", required) 
+            option(value="" disabled selected) Select an expense type
+            option(value="Food") Food
+            option(value="Transportation") Transportation
+            option(value="Utilities") Utilities
+            option(value="Entertainment") Entertainment
+            option(value="Other") Other
+        .form-group
+          label(for="amount") Amount:
+          input(type="number", id="amount", name="amount", class="form-control", required)
+        button.btn.btn-primary(type="submit") Add Expense
+
+      
+      h2.mt-4 Expenses
+      table#expenses-table.table.table-striped
+        thead
+          tr
+            th Expense Type
+            th Amount
+            th Actions
+        tbody
+        
+      .toast#toast-message(style="display:none;")
+        | Expense added successfully!
+        
+    script(src="https://code.jquery.com/jquery-3.5.1.slim.min.js")
+    script(src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js")
+    script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js")
+    script(src="/js/dashboard.js") 
