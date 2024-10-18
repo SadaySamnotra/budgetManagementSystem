@@ -9,6 +9,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 //different users have different dashboards with personalized content.
 //if the user cannot register, he/she will see the error on the screen.
 //in case some other error occours, the user will be shown the default error page(500 Internal server error).
+//this is completed and ready for export, no addidtions needed as of now.....
 const registerUser = async(req,res)=>{
     const userData = req.body;
     try{
@@ -35,6 +36,7 @@ const registerUser = async(req,res)=>{
     }
 };
 
+//ye bhi complete hai and can be used anywhere in the project.
 const loginUser = async(req,res)=>{
     const {password}= req.body;
     try{
@@ -66,6 +68,7 @@ const loginUser = async(req,res)=>{
     }
 };
 
+//completedd.
 const logoutUser = (req,res)=>{
     res.clearCookie('token');
     res.redirect('/auth/logout-success');

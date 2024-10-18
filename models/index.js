@@ -6,11 +6,6 @@ const Sequelize = require('sequelize');
 const process = require('process');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const User = require('./users');
-const Expense = require('./expenses');
-const Budget = require('./budget');
-
-
 
 const config = require(__dirname + '/../config/config.js')[env];
 const db = {};
@@ -41,18 +36,6 @@ Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
-});
-
-const models = {
-    User,
-    Expense,
-    Budget
-};
-
-Object.keys(models).forEach(modelName => {
-    if (models[modelName].associate) {
-        models[modelName].associate(models);
-    }
 });
 
 db.sequelize = sequelize;

@@ -27,18 +27,14 @@ document.getElementById('add-expense-form').addEventListener('submit', async fun
         console.log('Error:', error);
         showToast("An error occurred while adding the expense.");
     }
-
-    
     document.getElementById('expenseType').value = ''; 
     document.getElementById('amount').value = '';
 });
-
 
 document.addEventListener('DOMContentLoaded', async function () {
     console.log("DOM fully loaded and parsed");
     await loadExpenses(); 
 });
-
 
 async function loadExpenses() {
     try {
@@ -55,25 +51,32 @@ async function loadExpenses() {
     }
 }
 
-async function deleteExpense(expenseID){
-    try{
-        const response = await fetch(`/api/expenses/${expenseID}`,{
-            method:'DELETE',
+async function updateExpense(expenseID, updatedData) {
+    try {
+        const response = await fetch(`/api/expenses/${expenseID}`, {
+            method: 'PUT', 
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedData), 
         });
+
         if (response.ok) {
-            
-            const rowToDelete = document.querySelector(`button[data-id="${expenseID}"]`).closest('tr');
-            rowToDelete.remove();
-            showToast("Expense deleted successfully!");
+            const updatedExpense = await response.json();
+           
+            showToast("Expense updated successfully!");
         } else {
             const errorMessage = await response.text();
-            showToast(`Failed to delete expense: ${errorMessage}`);
+            showToast(`Failed to update expense: ${errorMessage}`);
         }
-
-    }catch(error){
+    } catch (error) {
         console.error(error);
+        showToast(`Error updating expense: ${error.message}`);
     }
 }
+
+
+
 
 function addExpenseToTable(expense) {
     const tableBody = document.querySelector('#expenses-table tbody');
@@ -82,7 +85,9 @@ function addExpenseToTable(expense) {
     row.innerHTML = `
       <td>${expense.category || "N/A"}</td> 
       <td>${expense.amount || "N/A"}</td> 
+      <td><button class = "edit-expense-btn" data-id="${expense.expenseID}">Edit</button></td>
       <td><button class="delete-expense-btn" data-id="${expense.expenseID}">Delete</button></td> 
+      <td>${expense.createdAt || "N/A"}</td>
     `;
 
     const deleteButton = row.querySelector('.delete-expense-btn');
@@ -90,6 +95,17 @@ function addExpenseToTable(expense) {
         const expenseID = deleteButton.dataset.id;
         await deleteExpense(expenseID); 
     });
+
+    const editButton = row.querySelector('.edit-expense-btn');
+    editButton.addEventListener('click',async()=>{
+        const expenseID = editButton.dataset.id;
+        const expenseData = await updateExpense(expenseID); 
+        if (expenseData) { 
+            document.querySelector('#editExpenseType').value = expenseData.category;
+            document.querySelector('#editAmount').value = expenseData.amount;
+            $('#editExpenseModal').modal('show'); 
+        }
+    })
 
     tableBody.appendChild(row);
 }

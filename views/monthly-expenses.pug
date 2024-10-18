@@ -1,0 +1,77 @@
+doctype html
+html
+  head
+    title Monthly Expenses
+    link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css")
+    link(rel="stylesheet", href="/css/styles.css")
+    
+  body
+    nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+      a.navbar-brand(href="/") Budget Management
+      button.navbar-toggler(type="button", data-toggle="collapse", data-target="#navbarNav", aria-controls="navbarNav", aria-expanded="false", aria-label="Toggle navigation")
+        span.navbar-toggler-icon
+      div#navbarNav.collapse.navbar-collapse
+        ul.navbar-nav
+          li.nav-item
+            a.nav-link(href="/user/userDashboard") User Dashboard
+          li.nav-item
+            span.nav-link Welcome, #{user.firstName} #{user.lastName}
+          li.nav-item
+            form(action="/auth/logout", method="GET")
+              button.btn.btn-outline-danger(type="submit") Logout
+
+    .container.mt-3
+      h2.mb-4 Monthly Expenses and Budget
+
+    
+      .row
+        .col-md-6
+          h4 Set Monthly Budget
+          //abhi isme route add karni hai and dynamically data integrate karna hai.
+          //action mein budget ka CRUD route daalke data add karna hai table mein taaki user add budget pe click kare aur uske
+          //record mein budget add hojaye.
+          form#add-budget-form(method="POST" action=" ") 
+            .form-group
+              label(for="month") Select Month:
+              input#month(type="month", name="month", class="form-control", required)
+            .form-group
+              label(for="budgetCategory") Select Category:
+              select#budgetCategory(class="form-control", name="category", required)
+                option(value="" disabled selected) Select a category
+                option(value="Food") Food
+                option(value="Transportation") Transportation
+                option(value="Utilities") Utilities
+                option(value="Entertainment") Entertainment
+                option(value="Other") Other
+            .form-group
+              label(for="budgetAmount") Set Budget Amount:
+              input#budgetAmount(type="number", name="budgetAmount", class="form-control", required)
+            button.btn.btn-primary(type="submit") Set Budget
+        
+        .col-md-6
+          h4 Your Budget Overview
+          .table-responsive
+            table#budget-table.table.table-striped.table-bordered
+              thead
+                tr
+                  th Category
+                  th Budget Amount
+                  th Total Expenses
+                  th Remaining Amount
+              tbody
+
+      
+      h4.mt-4 Your Expenses
+      .table-responsive
+        table#expenses-table.table.table-striped.table-bordered
+          thead
+            tr
+              th Date
+              th Category
+              th Amount
+              th Actions
+          tbody
+    script(src="https://code.jquery.com/jquery-3.5.1.slim.min.js")
+    script(src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js")
+    script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js")
+    script(src="/js/monthly-expenses.js") 

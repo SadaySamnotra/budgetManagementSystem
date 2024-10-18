@@ -38,8 +38,27 @@ const deleteExpense = async(req,res)=>{
     }
 }
 
+const editExpense = async(req,res)=>{
+    try{
+        const {id} = req.params;
+        const {amount,category}= req.body;
+        const expense = await Expenses.findByPk(id);
+        if(!expense){
+            return res.status(404).send('Expense not found');
+        }
+        expense.category = category;
+        expense.amount = amount;
+        await expense.save();
+        res.status(200).json(expense);
+    }catch(error){
+        console.error(error);
+        res.status(500).send("Internal server error");
+    }
+};
+
 module.exports = {
     addExpense,
     getExpenses,
     deleteExpense,
+    editExpense,
 };

@@ -6,6 +6,7 @@ const staticRouter = require('./routers/staticRouter');
 const userRouter = require('./routers/userRouter');
 const cookieParser = require('cookie-parser');
 const apiRouter = require('./routers/apiRouter');
+const budgetRouter = require('./routers/budgetRouter');
 
 const app = express();
 const PORT = 5500;
@@ -24,6 +25,7 @@ app.use('/',staticRouter);
 app.use('/auth',authRouter);
 app.use('/user',userRouter);
 app.use('/api',apiRouter);
+app.use('/budget',budgetRouter);
 
 //starting the application.
 sequelize.sync({force:false})
