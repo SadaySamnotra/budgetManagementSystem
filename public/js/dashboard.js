@@ -1,118 +1,170 @@
-document.getElementById('add-expense-form').addEventListener('submit', async function(event) {
-    event.preventDefault(); 
+document.addEventListener('DOMContentLoaded', () => {
+    const addExpenseForm = document.getElementById('add-expense-form');
+    const expensesTableBody = document.querySelector('#expenses-table tbody');
+    const editExpenseModal = new bootstrap.Modal(document.getElementById('editExpenseModal'));
+    const editExpenseForm = document.getElementById('edit-expense-form');
+    let currentExpenseID = null;
 
-    const expenseType = document.getElementById('expenseType').value; 
-    const expenseAmount = document.getElementById('amount').value;
-    if (!expenseType || !expenseAmount) {
-        showToast("Please fill in all fields.");
-        return;
-    }
-    try {
-        const response = await fetch('/api/expenses', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ category: expenseType, amount: parseFloat(expenseAmount) }),
+
+    if (addExpenseForm) {
+        addExpenseForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const formData = new FormData(addExpenseForm);
+            const expenseData = {
+                category: formData.get('category'),
+                amount: formData.get('amount')
+            };
+
+            console.log('Adding Expense:', expenseData); 
+
+            try {
+                const response = await fetch('/api/expenses', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(expenseData)
+                });
+
+                if (response.ok) {
+                    fetchExpenses(); 
+                    showToast("Expense added successfully!");
+                    addExpenseForm.reset(); 
+                } else {
+                    console.error('Failed to add expense');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
         });
-        if (response.ok) {
-            const newExpense = await response.json(); 
-            addExpenseToTable(newExpense); 
-            showToast("Expense added successfully!");
-        } else {
-            const errorMessage = await response.text(); 
-            showToast(`Failed to add expense: ${errorMessage}`);
-        }
-    } catch (error) {
-        console.log('Error:', error);
-        showToast("An error occurred while adding the expense.");
     }
-    document.getElementById('expenseType').value = ''; 
-    document.getElementById('amount').value = '';
-});
 
-document.addEventListener('DOMContentLoaded', async function () {
-    console.log("DOM fully loaded and parsed");
-    await loadExpenses(); 
-});
-
-async function loadExpenses() {
-    try {
-        const response = await fetch('/api/expenses');
-        console.log(response); 
-        if (response.ok) {
+   
+    async function fetchExpenses() {
+        try {
+            const response = await fetch('/api/expenses');
             const expenses = await response.json();
-            expenses.forEach(expense => addExpenseToTable(expense));
-        } else {
-            console.log("Failed to fetch expenses.");
-        }
-    } catch (error) {
-        console.log("Error loading expenses:", error);
-    }
-}
 
-async function updateExpense(expenseID, updatedData) {
-    try {
-        const response = await fetch(`/api/expenses/${expenseID}`, {
-            method: 'PUT', 
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(updatedData), 
+            console.log('Fetched Expenses:', expenses); 
+
+       
+            expensesTableBody.innerHTML = '';
+
+          
+            expenses.forEach(expense => {
+                const expenseRow = `
+                    <tr data-expense-id="${expense.expenseID}">
+                        <td>${expense.category}</td>
+                        <td>${expense.amount}</td>
+                        <td><button class="btn btn-warning edit-expense-btn">Edit</button></td>
+                        <td><button class="btn btn-danger delete-expense-btn">Delete</button></td>
+                        <td>${new Date(expense.dateOfExpense).toLocaleDateString()}</td>
+                    </tr>
+                `;
+                expensesTableBody.insertAdjacentHTML('beforeend', expenseRow);
+            });
+
+            attachEventListeners();
+        } catch (error) {
+            console.error('Error fetching expenses:', error);
+        }
+    }
+
+   
+    function attachEventListeners() {
+       
+        document.querySelectorAll('.edit-expense-btn').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const expenseRow = event.target.closest('tr');
+                currentExpenseID = expenseRow.dataset.expenseId;
+                const category = expenseRow.cells[0].textContent;
+                const amount = expenseRow.cells[1].textContent;
+
+                document.getElementById('editExpenseType').value = category;
+                document.getElementById('editAmount').value = amount;
+                document.getElementById('editExpenseID').value = currentExpenseID;
+
+                console.log('Editing Expense:', currentExpenseID, category, amount); 
+
+                editExpenseModal.show();
+            });
         });
 
-        if (response.ok) {
-            const updatedExpense = await response.json();
-           
-            showToast("Expense updated successfully!");
-        } else {
-            const errorMessage = await response.text();
-            showToast(`Failed to update expense: ${errorMessage}`);
-        }
-    } catch (error) {
-        console.error(error);
-        showToast(`Error updating expense: ${error.message}`);
+        
+        document.querySelectorAll('.delete-expense-btn').forEach(button => {
+            button.addEventListener('click', async (event) => {
+                const expenseRow = event.target.closest('tr');
+                const expenseID = expenseRow.dataset.expenseId;
+
+                if (confirm('Are you sure you want to delete this expense?')) {
+                    try {
+                        const response = await fetch(`/api/expenses/${expenseID}`, { method: 'DELETE' });
+
+                        if (response.ok) {
+                            fetchExpenses(); 
+                            showToast("Expense deleted successfully!");
+                        } else {
+                            console.error('Failed to delete expense');
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                }
+            });
+        });
     }
-}
+
+    
+    if (editExpenseForm) {
+      
+        
+        editExpenseForm.addEventListener('submit', () => console.log("HELLO"));
+
+        editExpenseForm.addEventListener('submit', async (event) => {
+
+            event.preventDefault();
+
+           
+            if (editExpenseModal._isShown) {
+                const formData = new FormData(editExpenseForm);
+                const expenseData = {
+                    category: formData.get('category'),
+                    amount: formData.get('amount')
+                };
+                console.log('Updating Expense:', currentExpenseID, expenseData);
+
+                try {
+                    const response = await fetch(`/api/expenses/${currentExpenseID}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(expenseData)
+                    });
+
+                    if (response.ok) {
+                        fetchExpenses(); 
+                        editExpenseModal.hide(); 
+                        showToast("Expense updated successfully!");
+                    } else {
+                        console.error('Failed to update expense');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            } else {
+                console.warn('Edit Expense Modal is not shown!'); 
+            }
+        });
+    }
+
+    
+    fetchExpenses(); 
 
 
-function addExpenseToTable(expense) {
-    const tableBody = document.querySelector('#expenses-table tbody');
-    const row = document.createElement('tr');
-
-    row.innerHTML = `
-      <td>${expense.category || "N/A"}</td> 
-      <td>${expense.amount || "N/A"}</td> 
-      <td><button class = "edit-expense-btn" data-id="${expense.expenseID}">Edit</button></td>
-      <td><button class="delete-expense-btn" data-id="${expense.expenseID}">Delete</button></td> 
-      <td>${expense.createdAt || "N/A"}</td>
-    `;
-
-    const deleteButton = row.querySelector('.delete-expense-btn');
-    deleteButton.addEventListener('click',async()=>{
-        const expenseID = deleteButton.dataset.id;
-        await deleteExpense(expenseID); 
-    });
-
-    const editButton = row.querySelector('.edit-expense-btn');
-    editButton.addEventListener('click',async()=>{
-        const expenseID = editButton.dataset.id;
-        const expenseData = await updateExpense(expenseID); 
-        if (expenseData) { 
-            document.querySelector('#editExpenseType').value = expenseData.category;
-            document.querySelector('#editAmount').value = expenseData.amount;
-            $('#editExpenseModal').modal('show'); 
-        }
-    })
-
-    tableBody.appendChild(row);
-}
-
-function showToast(message) {
-    const toast = document.getElementById('toast-message');
-    toast.innerHTML = message;
-    toast.style.display = 'block';
-    setTimeout(() => {
-        toast.style.display = 'none';
-    }, 3000);
-}
+    function showToast(message) {
+        const toastElement = document.getElementById('toast-message');
+        toastElement.innerText = message;
+        toastElement.style.display = 'block';
+        setTimeout(() => {
+            toastElement.style.display = 'none';
+        }, 3000);
+    }
+});

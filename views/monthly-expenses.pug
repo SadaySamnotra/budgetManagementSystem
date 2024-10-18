@@ -28,6 +28,7 @@ html
           //abhi isme route add karni hai and dynamically data integrate karna hai.
           //action mein budget ka CRUD route daalke data add karna hai table mein taaki user add budget pe click kare aur uske
           //record mein budget add hojaye.
+          //update: its done.
           form#add-budget-form(method="POST" action="/budget/set-budget") 
             .form-group
               label(for="month") Select Month:
@@ -67,7 +68,6 @@ html
               th Date
               th Category
               th Amount
-              th Actions
           tbody
     script(src="https://code.jquery.com/jquery-3.5.1.slim.min.js")
     script(src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js")

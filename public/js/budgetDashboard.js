@@ -63,9 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
               <td>${new Date(expense.dateOfExpense).toLocaleDateString()}</td>
               <td>${expense.category}</td>
               <td>${expense.amount}</td>
-              <td>
-                <!-- Add buttons or actions for editing/deleting expenses -->
-              </td>
             </tr>
           `;
           expensesTableBody.insertAdjacentHTML('beforeend', expenseRow);

@@ -49,6 +49,32 @@ html
               th Date Added
           tbody
 
+    .modal.fade#editExpenseModal(tabindex="-1" role="dialog" aria-labelledby="editExpenseModalLabel" aria-hidden="true")
+      .modal-dialog(role="document")
+        .modal-content
+          .modal-header
+            h5#editExpenseModalLabel.modal-title Edit Expense
+            button.close(type="button" data-dismiss="modal" aria-label="Close")
+              span(aria-hidden="true") &times;
+          .modal-body
+            form#edit-expense-form(method = "POST")
+              .form-group
+                label(for="editExpenseType") Type of Expense:
+                select#editExpenseType(class="form-control", name="category", required) 
+                  option(value="Food") Food
+                  option(value="Transportation") Transportation
+                  option(value="Utilities") Utilities
+                  option(value="Entertainment") Entertainment
+                  option(value="Other") Other
+              .form-group
+                label(for="editAmount") Amount:
+                input(type="number", id="editAmount", name="amount", class="form-control", required)
+                input(type="hidden", id="editExpenseID", name="expenseID")
+                button.btn.btn-secondary(type="button", data-dismiss="modal") Close
+                button.btn.btn-primary#save-expense-btn(type="submit") Save changes
+          .modal-footer
+            
+
     .toast#toast-message(style="display:none;")
       | Expense added successfully!
 

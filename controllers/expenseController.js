@@ -1,6 +1,7 @@
 const {Expenses} = require('../models/index');
 const expenseService = require('../service/expenseService');
 
+
 const addExpense=async(req,res)=>{
     try{
         const {category,amount} = req.body;
@@ -19,7 +20,9 @@ const addExpense=async(req,res)=>{
 };
 
 const getExpenses = async(req,res)=>{
-    return await expenseService.getExpense(req,res);
+    const userID = req.user.id;
+    const data =  await expenseService.getExpense(userID);
+    return res.json(data);
 }
 
 const deleteExpense = async(req,res)=>{
@@ -56,9 +59,26 @@ const editExpense = async(req,res)=>{
     }
 };
 
+const getExpenseByExpenseID = async (req, res) => {
+    try {
+        const { id } = req.params;  
+        const expense = await Expenses.findByPk(id); 
+        if (expense) {
+            return res.json(expense);  
+        } else {
+            return res.status(404).send("Expense not found");
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal server error");
+    }
+};
+
+
 module.exports = {
     addExpense,
     getExpenses,
     deleteExpense,
     editExpense,
+    getExpenseByExpenseID,
 };

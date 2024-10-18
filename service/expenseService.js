@@ -1,5 +1,6 @@
 const {Expenses} = require('../models/index');
 
+
 const getExpense = async(userID)=>{
     try{
         const expense = await Expenses.findAll({where:{userID}});
