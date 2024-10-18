@@ -76,8 +76,6 @@ async function updateExpense(expenseID, updatedData) {
 }
 
 
-
-
 function addExpenseToTable(expense) {
     const tableBody = document.querySelector('#expenses-table tbody');
     const row = document.createElement('tr');

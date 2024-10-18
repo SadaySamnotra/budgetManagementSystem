@@ -22,15 +22,13 @@ html
 
     .container.mt-3
       h2.mb-4 Monthly Expenses and Budget
-
-    
       .row
         .col-md-6
           h4 Set Monthly Budget
           //abhi isme route add karni hai and dynamically data integrate karna hai.
           //action mein budget ka CRUD route daalke data add karna hai table mein taaki user add budget pe click kare aur uske
           //record mein budget add hojaye.
-          form#add-budget-form(method="POST" action=" ") 
+          form#add-budget-form(method="POST" action="/budget/set-budget") 
             .form-group
               label(for="month") Select Month:
               input#month(type="month", name="month", class="form-control", required)
@@ -74,4 +72,4 @@ html
     script(src="https://code.jquery.com/jquery-3.5.1.slim.min.js")
     script(src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js")
     script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js")
-    script(src="/js/monthly-expenses.js") 
+    script(src="/js/budgetDashboard.js") 

@@ -1,10 +1,9 @@
 const {Expenses} = require('../models/index');
 
-const getExpense = async(req,res)=>{
+const getExpense = async(userID)=>{
     try{
-        const userID = req.user.id;
         const expense = await Expenses.findAll({where:{userID}});
-        res.json(expense);
+        return expense;
     }catch(error){
         console.log(error);
     }
