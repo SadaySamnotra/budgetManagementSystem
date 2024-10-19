@@ -49,9 +49,12 @@ document.addEventListener('DOMContentLoaded', () => {
           const budgetRow = `
             <tr>
               <td>${budget.category}</td>
+              <td>${budget.month}</td>
               <td>${budget.budgetAmount}</td>
               <td>${totalExpenses}</td>
               <td>${remainingAmount}</td>
+              <td><button class="btn btn-warning edit-budget-btn">Edit</button></td>
+              <td><button class="btn btn-danger delete-budget-btn">Delete</button></td>
             </tr>
           `;
           budgetTableBody.insertAdjacentHTML('beforeend', budgetRow);
@@ -72,6 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Error fetching budget and expenses data:', error);
       }
     }
+
     fetchBudgetAndExpenses();
   });
   

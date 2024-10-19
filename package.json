@@ -4,7 +4,8 @@
   "description": "",
   "main": "databaseConfiguration.js",
   "scripts": {
-    "start": "nodemon index"
+    "start": "nodemon index",
+    "test":"jest"
   },
   "author": "",
   "license": "ISC",
@@ -20,5 +21,9 @@
     "pug": "^3.0.3",
     "sequelize": "^6.37.4",
     "sequelize-cli": "^6.6.2"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
   }
 }

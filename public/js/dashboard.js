@@ -115,15 +115,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     
     if (editExpenseForm) {
-      
-        
         editExpenseForm.addEventListener('submit', () => console.log("HELLO"));
-
         editExpenseForm.addEventListener('submit', async (event) => {
-
             event.preventDefault();
-
-           
             if (editExpenseModal._isShown) {
                 const formData = new FormData(editExpenseForm);
                 const expenseData = {
@@ -131,14 +125,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     amount: formData.get('amount')
                 };
                 console.log('Updating Expense:', currentExpenseID, expenseData);
-
                 try {
                     const response = await fetch(`/api/expenses/${currentExpenseID}`, {
                         method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(expenseData)
                     });
-
                     if (response.ok) {
                         fetchExpenses(); 
                         editExpenseModal.hide(); 
