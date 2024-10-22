@@ -7,22 +7,29 @@ const addExpense=async(req,res)=>{
         const {category,amount} = req.body;
         const userID = req.user.id;
         const dateOfExpense = new Date();
+        if(!category || !amount || !userID){
+            return res.status(400).json({error:"Please enter all the fields correctly."});
+        }
         const expense = await Expenses.create({
             userID,
             amount,
             category,
             dateOfExpense,
         });
-        res.status(201).json(expense);
+        return res.status(201).json(expense);
     }catch(error){
-        console.log(error);
+        console.log("Error in expense adding: ",error);
+        return res.status(500).json({ error: 'Failed to add expense.' });
     }
 };
 
 const getExpenses = async(req,res)=>{
     const userID = req.user.id;
+    if(!userID){
+        return res.status(400).redirect("/error");
+    }
     const data =  await expenseService.getExpense(userID);
-    return res.json(data);
+    return res.status(200).json(data);
 }
 
 const deleteExpense = async(req,res)=>{
@@ -64,7 +71,7 @@ const getExpenseByExpenseID = async (req, res) => {
         const { id } = req.params;  
         const expense = await Expenses.findByPk(id); 
         if (expense) {
-            return res.json(expense);  
+            return res.status(200).json(expense);  
         } else {
             return res.status(404).send("Expense not found");
         }

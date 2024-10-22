@@ -27,15 +27,14 @@ app.use('/user',userRouter);
 app.use('/api',apiRouter);
 app.use('/budget',budgetRouter);
 
-//starting the application.
-sequelize.sync({force:false})
-        .then(()=>{
-            return app.listen(PORT,()=>{
-                console.log(`The server is running on port: ${PORT}`);
-            })
-        })
-        .catch((error)=>{
-            console.error('Unable to connect with the database',error);
-        });
 
+sequelize.authenticate() 
+    .then(() => {
+        return app.listen(PORT, () => {
+            console.log(`The server is running on port: ${PORT}`);
+        });
+    })
+    .catch((error) => {
+        console.error('Unable to connect with the database', error);
+    });
 module.exports=app;

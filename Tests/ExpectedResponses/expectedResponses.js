@@ -37,7 +37,28 @@ const expectedResponses = {
             createdAt: expect.any(Date),
             updatedAt: expect.any(Date)
         }
-    ]
+    ],
+    expenseCreated: {
+        id: 1,
+        userID: 1,
+        amount: expect.any(Number),
+        category: expect.any(String),
+        dateOfExpense: expect.any(Date),
+    },
+    expenseUpdated: {
+        userID: 1,
+        expenseID: 1,
+        amount: 500,
+        category: 'Food',
+    },
+    expenseNotFound: {
+        status: 404,
+        message: "Expense not found"
+    },
+    internalServerError: {
+        status: 500,
+        message: "Internal server error"
+    }
 };
 
 module.exports = expectedResponses;
