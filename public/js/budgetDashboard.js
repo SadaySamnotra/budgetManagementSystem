@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
           },
           body: JSON.stringify(budgetData)
         });
-  
         if (response.ok) {
           const result = await response.json();
           fetchBudgetAndExpenses();

@@ -5,15 +5,15 @@ const testData = {
         budgetAmount: 500.00
     },
     invalidBudget: {
-        month: '',  // Invalid month
-        category: '',  // Invalid category
-        budgetAmount: -100  // Invalid amount
+        month: '',  
+        category: '',
+        budgetAmount: -100  
     },
     userID: 1,
     budgets: [
         {
             id: 1,
-            userID: 1,  // Consistent userID
+            userID: 1, 
             month: new Date('2024-01-01T00:00:00Z'),
             category: 'Groceries',
             budgetAmount: 500.00,

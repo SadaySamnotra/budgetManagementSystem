@@ -10,7 +10,6 @@ const setBudget = async (req, res) => {
         if (!userID) {
             return res.status(400).json({ error: "User ID is required" });
         }
-
         const { month, category, budgetAmount } = req.body;
         if (!month || !category || budgetAmount === undefined) {
             return res.status(400).json({ error: "Month, category, and budget amount are required." });
@@ -24,10 +23,11 @@ const setBudget = async (req, res) => {
             category,
             budgetAmount,
         });
+        console.log(result);
         if (!result) {
             return res.status(400).json({ error: "Failed to create budget." });
         }
-
+        console.log(result);
         return res.status(201).json(result);
         
     } catch (error) {

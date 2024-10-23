@@ -29,6 +29,7 @@ describe('User related (Auth Controller) integration test cases', () => {
         });
 
         //this test case will only throw an error in case of an actual error thrown by the db. 
+        // yahi ek TC hai jo run nahi kar raha.
         test('User is not registered and receives a 500 status code with error message', async () => {
             User.create.mockImplementationOnce(() => {
                 throw new Error("Database error");

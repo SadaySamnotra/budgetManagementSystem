@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(expenseData)
                 });
-
                 if (response.ok) {
                     fetchExpenses(); 
                     showToast("Expense added successfully!");
