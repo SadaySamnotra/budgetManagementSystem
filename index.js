@@ -19,7 +19,6 @@ app.set('views','./views');
 app.set('view engine','pug');
 app.use(cookieParser());
 
-
 //routes.
 app.use('/',staticRouter);
 app.use('/auth',authRouter);
@@ -27,8 +26,8 @@ app.use('/user',userRouter);
 app.use('/api',apiRouter);
 app.use('/budget',budgetRouter);
 
-
-sequelize.authenticate() 
+if(process.env.NODE_ENV!=='test'){
+    sequelize.authenticate() 
     .then(() => {
         return app.listen(PORT, () => {
             console.log(`The server is running on port: ${PORT}`);
@@ -37,4 +36,6 @@ sequelize.authenticate()
     .catch((error) => {
         console.error('Unable to connect with the database', error);
     });
+}
+
 module.exports=app;

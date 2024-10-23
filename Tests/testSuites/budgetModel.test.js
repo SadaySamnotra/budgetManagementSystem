@@ -10,7 +10,6 @@ jest.mock('../../service/expenseService');
 
 describe('Budget Controller', () => {
     let req, res;
-
     beforeEach(() => {
         req = { 
             user: { id: testData.userID },

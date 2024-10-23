@@ -188,7 +188,7 @@ describe('Expense controller unit tests',()=>{
     describe('Testing the getExpenseByExpenseID controller',()=>{
         test('Successfully returns the expense details, and 200 status code when the expenseID is given',async()=>{
             const req = {
-                params:{id:testingData.userID},
+                params:{expenseID:testingData.mockExpenseData.expenseID},
             };
             const res = {
                 status: jest.fn().mockReturnThis(),
@@ -198,13 +198,13 @@ describe('Expense controller unit tests',()=>{
             Expenses.findByPk = jest.fn().mockResolvedValue(expenseData);
             await expenseController.getExpenseByExpenseID(req,res);
 
-            expect(Expenses.findByPk).toHaveBeenCalledWith(req.params.id);
+            expect(Expenses.findByPk).toHaveBeenCalledWith(req.params.expenseID);
             expect(res.status).toHaveBeenCalledWith(200);
             expect(res.json).toHaveBeenCalledWith(expenseData);
         });
         test('If the expenseID is not present then it should return 404 and a message',async()=>{
             const req ={
-                params:{id:testingData.userID},
+                params:{expenseID:testingData.mockExpenseData.expenseID},
             }
             const res = {
                 status: jest.fn().mockReturnThis(),
@@ -213,13 +213,13 @@ describe('Expense controller unit tests',()=>{
             Expenses.findByPk = jest.fn().mockResolvedValue(null);
             await expenseController.getExpenseByExpenseID(req,res);
 
-            expect(Expenses.findByPk).toHaveBeenCalledWith(req.params.id);
+            expect(Expenses.findByPk).toHaveBeenCalledWith(req.params.expenseID);
             expect(res.status).toHaveBeenCalledWith(404);
             expect(res.send).toHaveBeenCalledWith("Expense not found");
         });
         test('Throw an error in case there is a DB related issue or a server related issue',async()=>{
             const req = {
-                params:{id:testingData.userID},
+                params:{expenseID:testingData.mockExpenseData.expenseID},
             };
             const res  ={
                 status: jest.fn().mockReturnThis(),
@@ -227,8 +227,7 @@ describe('Expense controller unit tests',()=>{
             };
             Expenses.findByPk = jest.fn().mockRejectedValue(new Error("Internal DB error"));
             await expenseController.getExpenseByExpenseID(req,res);
-
-            expect(Expenses.findByPk).toHaveBeenCalledWith(req.params.id);
+            expect(Expenses.findByPk).toHaveBeenCalledWith(req.params.expenseID);
             expect(res.status).toHaveBeenCalledWith(500);
             expect(res.send).toHaveBeenCalledWith('Internal server error');
         });

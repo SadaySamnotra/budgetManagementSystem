@@ -68,8 +68,8 @@ const editExpense = async(req,res)=>{
 
 const getExpenseByExpenseID = async (req, res) => {
     try {
-        const { id } = req.params;  
-        const expense = await Expenses.findByPk(id); 
+        const { expenseID } = req.params;  
+        const expense = await Expenses.findByPk(expenseID); 
         if (expense) {
             return res.status(200).json(expense);  
         } else {

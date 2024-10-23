@@ -4,6 +4,7 @@ const { sequelize } = require('../../models/index');
 const app = require('../../index');
 const testData = require('../TestingData/testData');
 
+
 describe('User related (Auth Controller) integration test cases', () => {
     beforeAll(async () => {
         try {
@@ -27,7 +28,11 @@ describe('User related (Auth Controller) integration test cases', () => {
             expect(user).toBeTruthy();
         });
 
+        //this test case will only throw an error in case of an actual error thrown by the db. 
         test('User is not registered and receives a 500 status code with error message', async () => {
+            User.create.mockImplementationOnce(() => {
+                throw new Error("Database error");
+            });
             const res = await request(app)
                 .post('/auth/register')
                 .send(testData.wrongMockUser);
@@ -108,11 +113,8 @@ describe('User related (Auth Controller) integration test cases', () => {
             expect(res.headers['set-cookie']).not.toBeDefined();
         });
     });
-    
-    
+
     afterAll(async () => {
-        console.log('Closing the database connection...');
         await sequelize.close();
-        console.log('Database connection closed');
     });
 });
